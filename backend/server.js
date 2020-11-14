@@ -1,7 +1,47 @@
-let http = require("http");
-let app = require("./app");
+let http = require('http');
+let app = require('./app');
 
-app.set("port", process.env.PORT || 3000);
+let normalizePort = val => {
+  let port = parseInt(val, 10);
+
+  if (isNaN(port)) {
+    return val;
+  }
+  if (port >= 0) {
+    return port;
+  }
+  return false;
+};
+let port = normalizePort(process.env.PORT || '3000');
+app.set('port', port);
+
+let errorHandler = error => {
+  if (error.syscall !== 'listen') {
+    throw error;
+  }
+  let address = server.address();
+  let bind = typeof address === 'string' ? 'pipe ' + address : 'port: ' + port;
+  switch (error.code) {
+    case 'EACCES':
+      console.error(bind + ' requires elevated privileges.');
+      process.exit(1);
+      break;
+    case 'EADDRINUSE':
+      console.error(bind + ' is already in use.');
+      process.exit(1);
+      break;
+    default:
+      throw error;
+  }
+};
+
 let server = http.createServer(app);
 
-server.listen(process.env.PORT || 3000);
+server.on('error', errorHandler);
+server.on('listening', () => {
+  let address = server.address();
+  let bind = typeof address === 'string' ? 'pipe ' + address : 'port ' + port;
+  console.log('Listening on ' + bind);
+});
+
+server.listen(port);
