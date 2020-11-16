@@ -1,7 +1,9 @@
 let express = require("express");
 let bodyParser = require("body-parser");
-let object = require("./models/object");
 let mongoose = require("mongoose");
+
+let saucesRoutes = require("./routes/sauces");
+let userRoutes = require("./routes/user");
 
 mongoose.connect('mongodb+srv://Admin1:0isyvZgbD4j3NTcy@clusterp6.2s0rr.mongodb.net/ClusterP6?retryWrites=true&w=majority',
   { useNewUrlParser: true,
@@ -20,36 +22,7 @@ app.use((req, res, next) => {
 
 app.use(bodyParser.json());
 
-app.post("/api/sauces", (req, res, next) => {
-
-});
-
-app.post("/api/auth/signup", (req, res, next) => {
-
-});
-
-app.post("/api/login", (req, res, next) => {
-
-});
-
-app.get("/api/sauces", (req, res, next) => {
-
-});
-
-app.get("/api/sauces/:id", (req, res, next) => {
-
-});
-
-app.put("/api/sauces/:id", (req, res, next) => {
-
-});
-
-app.delete("/api/sauces/:id", (req, res, next) => {
-
-});
-
-app.post("/api/sauces/:id/like", (req, res, next) => {
-
-});
+app.use("/api/auth", userRoutes);
+app.use("/api/sauces", saucesRoutes);
 
 module.exports = app;
