@@ -10,9 +10,10 @@ router.get("/:id", auth, saucesCtrl.getOneSauce);
 
 router.get("/", auth, saucesCtrl.getAllSauces);
 
-
+/*
 router.post("/:id/like", (req, res, next) => {
 
 });
+*/
 
 module.exports = router;
