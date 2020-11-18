@@ -1,9 +1,12 @@
 let Sauce = require("../models/Sauces");
+let fs = require("fs");
 
 exports.createSauces = (req, res, next) => {
-    delete req.body._id;
+    let sauceObject = JSON.parse(req.body.thing);
+    delete sauceObject._id;
     let sauce = new Sauce({
-        ...req.body
+        ...sauceObject,
+        imageURL: `${req.protocol}://${req.get("host")}/images/&{req.file.filename}`
     });
     sauce.save()
         .then(() => res.status(201).json({ message: "Objet Validé!" }))
@@ -11,15 +14,27 @@ exports.createSauces = (req, res, next) => {
 }
 
 exports.modifySauces = (req, res, next) => {
-    Sauce.updateOne({ _id: req.params.id }, { ...req.body, _id: req.params .id })
+    let sauceObject = req.file ?
+        { 
+            ...JSON.parse(req.body.thing),
+            imageURL: `${req.protocol}://${req.get("host")}/images/&{req.file.filename}`
+        } : { ...req.body };
+    Sauce.updateOne({ _id: req.params.id }, { ...sauceObject, _id: req.params .id })
         .then(() => res.status(200).json({ message: "Objet Modifié!" }))
         .catch(error => res.status(400).json({ error }));
 };
 
 exports.deleteSauces = (req, res, next) => {
-    Sauce.deletOne({ _id: req.params.id })
-        .then(() => res.status(200).json({ message: "Objet Supprimé!" }))
-        .catch(error => res.status(400).json({ error }));
+    Sauce.findOne({ _id: req.params.id })
+        .then(thing => {
+            let filename = thing.imageURL.split("/images/")[1];
+            fs.unlink(`image/${filename}`, () => {
+                Sauce.deletOne({ _id: req.params.id })
+                    .then(() => res.status(200).json({ message: "Objet Supprimé!" }))
+                    .catch(error => res.status(400).json({ error }));
+            });
+        })
+        .catch(error => res.status(500).json({ error }));
 };
 
 exports.getOneSauce = (req, res, next) => {
