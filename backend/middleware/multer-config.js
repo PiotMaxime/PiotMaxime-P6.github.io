@@ -1,6 +1,6 @@
 let multer = require("multer");
 
-let MIME_TYPE = {
+let MIME_TYPES = {
     "image/jpg": "jpg",
     "image/jpeg": "jpg",
     "image/png": "png"
@@ -8,12 +8,12 @@ let MIME_TYPE = {
 
 let storage = multer.diskStorage({
     destination: (req, file, callback) => {
-        callback(null, "images")
+        callback(null, "images");
     },
-    filename: ( req, file, callback) => {
+    filename: (req, file, callback) => {
         let name = file.originalname.split(" ").join("_");
-        let extention = MIME_TYPE(file.mimetype);
-        callback(null, name + Date.now() + "." + extention);
+        let extension = MIME_TYPES[file.mimetype];
+        callback(null, name + Date.now() + "." + extension);
     }
 });
 
