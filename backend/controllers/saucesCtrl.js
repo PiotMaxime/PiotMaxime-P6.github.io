@@ -1,6 +1,6 @@
 let Sauce = require("../models/Sauces");
 let fs = require("fs");
-
+const { db } = require("../models/Sauces");
 
 exports.createSauces = (req, res, next) => {
     let sauceObject = JSON.parse(req.body.sauce);
@@ -51,7 +51,41 @@ exports.getAllSauces = (req, res, next) => {
 };
 
 exports.addLikes = (req, res, next) => {
-    Sauce.findOne({ _id: req.params.id })
-        .then()
+    console.log(req.body.like)
+    let like = req.body.like
+    let option = {}
+    switch(like) {
+        case -1:
+            console.log("case -1");
+            option =
+                {
+                    $push : { usersDisliked : req.body.userId },
+                    $inc: { dislikes : 1 }
+                };
+            break;
+        case 0:
+            console.log("case 0");
+            //if (user)
+            option =
+                {
+                    $pull : { usersLiked : req.body.userId },
+                    $pull : { usersDisliked : req.body.userId },
+                    $inc: { likes : -1 },
+                    $inc: { dislikes : -1 }
+                };
+            break;
+        case 1:
+            console.log("case 1");
+            console.log(req.body);
+            console.log(db.find());
+            option =
+                {   
+                    $inc : { likes : 1 },
+                    $push : { usersLiked : req.body.userId }
+                };
+            break;
+    }
+    Sauce.updateOne({ _id: req.params.id }, option)
+        .then(() => res.status(200).json({ message: "Objet Liké!" }))      
         .catch(error => res.status(400).json({ error }));
 };
