@@ -51,55 +51,6 @@ exports.getAllSauces = (req, res, next) => {
 };
 
 exports.addLikes = (req, res, next) => {
-    /*
-    console.log(req.body.like)
-    let like = req.body.like
-    let option = {}
-    switch(like) {
-        case -1:
-            console.log("case -1");
-            option =
-                {
-                    $push : { usersDisliked : req.body.userId },
-                    $inc: { dislikes : 1 }
-                };
-            break;
-        case 0:
-            console.log("case 0");
-            if (req.body.like !== -1) {
-                option = 
-                {
-                    $pull : { usersDisliked : req.body.userId },
-                    $inc : { dislikes : -1 }  
-                };
-                break;
-            } else if (req.body.like !== 1) {
-                option =
-                {
-                    $pull : { usersLiked : req.body.userId },
-                    $inc: { likes : -1 }
-                };
-                break;
-            }
-           option =
-                {
-                    $pull : { usersLiked : req.body.userId },
-                    $inc: { likes : -1 }
-                };
-                break;
-        case 1:
-            console.log("case 1");
-            option =
-                {   
-                    $inc : { likes : 1 },
-                    $push : { usersLiked : req.body.userId }
-                };
-            break;
-    }
-    Sauce.updateOne({ _id: req.params.id }, option)
-        .then(() => res.status(200).json({ message: "Objet Liké!" }))      
-        .catch(error => res.status(400).json({ error }));
-    */
    Sauce.findOne({ _id: req.params.id })
         .then(sauce => {
             console.log(req.body.like);

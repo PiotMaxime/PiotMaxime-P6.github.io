@@ -2,6 +2,7 @@
 
 MongoDB access:
 
+-SuperAdmin = sYgkDGVb0FS5MFfF
 -Admin1 = 9HEi9xNALPB04oK7
 
 Utilisateur Test: 
@@ -11,3 +12,5 @@ Utilisateur Test:
 -Louis-Duval@email.com = Yeah!85
 
 -Tartu-Yebe@email.com = Kebab_03
+
+-Victoire@win.fr = Samarche!23
