@@ -12,5 +12,3 @@ Utilisateur Test:
 -Louis-Duval@email.com = Yeah!85
 
 -Tartu-Yebe@email.com = Kebab_03
-
--Victoire@win.fr = Samarche!23

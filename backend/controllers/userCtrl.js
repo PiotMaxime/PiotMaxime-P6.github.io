@@ -1,14 +1,18 @@
 let bcrypt = require("bcrypt");
 let jwt = require("jsonwebtoken");
 let User = require("../models/User");
+let sanitize = require("mongo-sanitize")
+
 
 exports.signup = (req, res, next) => {
-    console.log(req.body.password);
-    console.log(req.body.email);
-    bcrypt.hash(req.body.password, 10)
+    let email = sanitize(req.body.email);
+    let buffer = Buffer.from(email);
+    let emailMask = buffer.toString("base64");
+    let password = sanitize(req.body.password);
+    bcrypt.hash(password, 10)
         .then(hash => {
             let user = new User({
-                email: req.body.email,
+                email: emailMask,
                 password: hash
             })
             user.save()
@@ -19,7 +23,10 @@ exports.signup = (req, res, next) => {
 };
 
 exports.login = (req, res, next) => {
-    User.findOne({ email: req.body.email })
+    let email = sanitize(req.body.email);
+    let buffer = Buffer.from(email);
+    let emailMask = buffer.toString("base64");
+    User.findOne({ email: emailMask })
       .then(user => {
         if (!user) {
           return res.status(401).json({ error: 'Utilisateur non trouvé !' });
