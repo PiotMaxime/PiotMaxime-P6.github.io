@@ -1,4 +1,3 @@
-let fs = require("fs")
 let http = require('http');
 let app = require('./app');
 
