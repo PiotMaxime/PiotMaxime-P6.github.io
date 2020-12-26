@@ -13,3 +13,8 @@ Utilisateur Test:
 -Louis-Duval@email.com = Yeah!85
 
 -Tartu-Yebe@email.com = Kebab_03
+
+Correction essayer les différents exemple=
+
+-LeMauvaisEmail@nonvalide = Bon-mdp_03
+-LeBonEmail@valider.com = t03
